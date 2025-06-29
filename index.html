@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +12,7 @@
 </head>
 <body>
   <!-- MAIN BLURRABLE CONTENT -->
+  <div id="blur-overlay"></div>
   <div id="main-content">
     <div class="container">
       <h1>Jonathan Alder GPA Calculator</h1>
@@ -35,7 +37,13 @@
 
     <div id="result" class="gpa-box"></div>
 
-    <!-- Settings Panel -->
+    
+  <!-- FLOATING BUTTONS OUTSIDE BLURRED AREA -->
+  <div id="bottom-right">
+  <button class="settings-button" onclick="toggleSettingsMenu()">⚙</button>
+  <div class="version-label">Tech Test v1.1.0</div>
+  </div>
+  
     <div id="settings-panel" class="settings-panel">
       <h2>Settings</h2>
       <div class="setting-item">
@@ -46,14 +54,19 @@
         <label for="percentToggle">💯/🔤</label>
         <input type="checkbox" id="percentToggle" onchange="toggleGradeInputMode()" />
       </div>
+      <div class="setting-item">
+        <label>🐞 Bugs</label>
+        <a href="https://github.com/benkurtz8109/GPA-Calculator/issues" target="_blank" class="bug-report-button">Go</a>
+      </div>
+      <div class="setting-item">
+  <label>📢 What's New</label>
+  <button class="whats-new-button" onclick="toggleWhatsNew()">View</button>
+</div>
     </div>
-  </div> <!-- END of main-content -->
-
-  <!-- FLOATING BUTTONS OUTSIDE BLURRED AREA -->
-  <button class="settings-button" onclick="toggleSettingsMenu()">⚙</button>
+  </div>
+    
   <button class="coming-soon-button" onclick="toggleComingSoon()">📢</button>
-  <div class="version-label">Tech Test v1.0.1</div>
-
+  
   <!-- Coming Soon Panel (Not Blurred) -->
   <div id="coming-soon-panel" class="coming-soon-panel">
     <h2>🚀 Coming Soon!</h2>
@@ -65,21 +78,51 @@
     </ul>
     <button class="close-button" onclick="toggleComingSoon()">Close</button>
   </div>
+  
+  <div id="whats-new-panel" class="whats-new-panel">
+  <h2>📢 What's New in v1.1.0</h2>
+  <ul>
+    <li>🐞 Added Bug report link</li>
+    <li>📢 Added a What's New button and panel</li>
+    <li>🐞 Fixed Blur bug</li>
+    <li>🐞 Fixed Flashing bug</li>
+  </ul>
+  <button class="close-button" onclick="toggleWhatsNew()">Close</button>
+</div>
 
   <!-- Script -->
   <script>
-    function toggleSettingsMenu() {
+  function toggleWhatsNew() {
+  const panel = document.getElementById('whats-new-panel');
+  const blurOverlay = document.getElementById('blur-overlay');
+  const isShown = panel.classList.toggle('show');
+
+  if (isShown) {
+    blurOverlay.classList.add('show');
+  } else {
+    blurOverlay.classList.remove('show');
+  }
+}
+  
+  
+  function toggleComingSoon() {
+  const panel = document.getElementById('coming-soon-panel');
+  const blurOverlay = document.getElementById('blur-overlay');
+
+  const isShown = panel.classList.toggle('show');
+
+  if (isShown) {
+    blurOverlay.classList.add('show');
+  } else {
+    blurOverlay.classList.remove('show');
+  }
+}
+  function toggleSettingsMenu() {
       const panel = document.getElementById('settings-panel');
       panel.classList.toggle('show');
     }
 
-    function toggleComingSoon() {
-      const panel = document.getElementById('coming-soon-panel');
-      const content = document.getElementById('main-content');
-      panel.classList.toggle('show');
-      content.classList.toggle('blur');
-    }
-
+  
     function toggleDarkMode() {
       const isChecked = document.getElementById('darkToggle').checked;
       document.body.classList.toggle('dark-mode', isChecked);
