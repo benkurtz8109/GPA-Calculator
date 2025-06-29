@@ -1,3 +1,4 @@
+
 * {
   margin: 0;
   padding: 0;
@@ -123,8 +124,8 @@ button:hover {
 }
 
 @keyframes flash-red {
-  0%, 100% { box-shadow: 0 0 0 rgba(231, 76, 60, 0); }
-  50% { box-shadow: 0 0 15px 6px rgba(231, 76, 60, 0.8); }
+  0%, 100% { box-shadow: 0 0 0 rgba(0, 0, 0, 0); }
+  50% { box-shadow: 0 0 15px 6px rgba(0, 0, 0, 0.8); }
 }
 
 .gpa-box {
@@ -179,9 +180,10 @@ button:hover {
   border: 4px solid #A71930;
 }
 
-.settings-button,
 .coming-soon-button {
   position: fixed;
+  bottom: 10px;
+  left: 10px;
   width: 50px;
   height: 50px;
   background-color: #A71930;
@@ -190,7 +192,7 @@ button:hover {
   font-size: 24px;
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
+  z-index: 995;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -198,63 +200,8 @@ button:hover {
   line-height: 1;
 }
 
-.settings-button {
-  bottom: 40px;
-  right: 10px;
-}
-
-.coming-soon-button {
-  bottom: 10px;
-  left: 10px;
-}
-
-.coming-soon-button:hover,
-.settings-button:hover {
+.coming-soon-button:hover {
   background-color: #000000;
-}
-
-.settings-panel,
-.coming-soon-panel {
-  position: fixed;
-  background: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  z-index: 2000;
-  transition: all 0.4s ease;
-}
-
-.settings-panel {
-  bottom: 80px;
-  right: 20px;
-  width: 220px;
-  border: 1px solid #ccc;
-  padding: 16px;
-  flex-direction: column;
-  gap: 12px;
-  opacity: 0;
-  transform: translateY(10px);
-  pointer-events: none;
-  color: #000000;
-}
-
-.settings-panel.show {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-.settings-panel h2 {
-  font-size: 1.1rem;
-  margin-bottom: 10px;
-  color: #000000;
-}
-
-.setting-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.95rem;
-  color: #333;
 }
 
 .coming-soon-panel {
@@ -267,6 +214,12 @@ button:hover {
   opacity: 0;
   pointer-events: none;
   text-align: left;
+  position: fixed;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  z-index: 2000;
+  transition: all 0.4s ease;
 }
 
 .coming-soon-panel.show {
@@ -300,16 +253,114 @@ button:hover {
   margin-left: auto;
 }
 
+#blur-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  backdrop-filter: blur(5px);
+  background: rgba(0, 0, 0, 0.1); /* optional tint */
+  z-index: 998;
+  display: none;
+}
+
+#blur-overlay.show {
+  display: block;
+}
+
 .blur {
-  filter: blur(5px) brightness(0.7);
+  filter: blur(5px);
+  transition: filter 0.3s ease;
+}
+
+#bottom-right {
+  position: fixed;  /* or absolute, depending on design */
+  bottom: 20px;
+  right: 20px;
+}
+
+.settings-button {
+  position: fixed;
+  bottom: 40px;
+  right: 10px;
+  width: 50px;
+  height: 50px;
+  background-color: #A71930;
+  color: white;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 995;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+}
+
+.settings-button:hover {
+  background-color: #000000;
+}
+
+
+.settings-panel {
+  position: fixed;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  z-index: 997;
+  transition: all 0.4s ease;
+  bottom: 80px;
+  right: 20px;
+  width: 220px;
+  border: 1px solid #ccc;
+  padding: 16px;
+  flex-direction: column;
+  gap: 12px;
+  opacity: 0;
+  transform: translateY(10px);
   pointer-events: none;
-  transition: filter 0.4s ease;
+  color: #000000;
+}
+
+.settings-panel.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.settings-panel h2 {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  color: #000000;
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.bug-report-button {
+  background-color: #A71930;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: background-color 0.5s;
+}
+
+.bug-report-button:hover {
+  background-color: #000000;
 }
 
 .version-label {
   position: fixed;
   bottom: 10px;
   right: 10px;
+  z-index: 995;
   font-size: 0.7rem;
   color: #000000;
   background-color: #FFFFFF;
@@ -318,6 +369,63 @@ button:hover {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   pointer-events: none;
   user-select: none;
+}
+
+.whats-new-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  padding: 20px 30px;
+  width: 90%;
+  max-width: 400px;
+  opacity: 0;
+  pointer-events: none;
+  text-align: left;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  z-index: 2000;
+  transition: all 0.4s ease;
+}
+
+.whats-new-panel.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: auto;
+}
+
+.whats-new-panel h2 {
+  margin-bottom: 10px;
+}
+
+.whats-new-panel ul {
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
+
+.whats-new-panel li {
+  margin-bottom: 8px;
+}
+
+.whats-new-button {
+  background-color: #A71930;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.whats-new-button:hover {
+  background-color: #000000;
+}
+
+body.dark-mode .whats-new-panel {
+  background-color: #444444;
+  color: #ffffff;
 }
 
 /* Dark Mode */
