@@ -18,6 +18,10 @@ body {
 }
 
 .container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background-color: #ffffff;
   padding: 30px 40px;
   border: 2px solid #ccc;
@@ -94,20 +98,16 @@ button:hover {
 @keyframes slideUpFlash {
   0% {
     opacity: 0;
-    transform: translateY(-20px); /* Slide up from below */
-  }
-  50% {
-    opacity: 1;
-    transform: translateY(0);
+    transform: translateY(-20px); /* Start higher (slide from above) */
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0); /* End at normal position */
   }
 }
 
 .slide-up {
-  animation: slideUpFlash 0.6s ease forwards;
+  animation: slideUpFlash 2.0s ease forwards;
 }
 
 .flash-green {
@@ -129,30 +129,34 @@ button:hover {
 }
 
 .gpa-box {
+  position: absolute;
+  top: 0;
+  left: 50%;
   opacity: 0;
-  transform: scale(0.98);
+  transform: translateX(-50%) translateY(20px);
   transition: opacity 1.0s ease, transform 1.0s ease;
   margin-top: 30px;
   padding: 16px 20px;
-  background-color: #ecf0f1;
+  background-color: #ffffff;
   border-radius: 20px;
   font-size: 1.2rem;
   font-weight: bold;
-  color: #2c3e50;
+  color: #000000;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   width: 50%;
-  max-width: 400px;
+  max-width: 200px;
   text-align: center;
   margin-left: auto;
   margin-right: auto;
   visibility: hidden;
   pointer-events: none;
   white-space: pre-line;
+  z-index: 995;
 }
 
 .gpa-box.visible {
   opacity: 1;
-  transform: scale(1);
+  transform: translateX(-50%) translateY(0);
   visibility: visible;
   pointer-events: auto;
   display: block;
@@ -161,7 +165,7 @@ button:hover {
   font-size: 18px;
   font-weight: bold;
   text-align: center;
-  transition: all 0.3s ease;
+  transition: all 0.5s ease;
 }
 
 .gpa-good {
@@ -416,21 +420,31 @@ button:hover {
   font-size: 0.85rem;
   cursor: pointer;
   border: none;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.5s ease;
 }
 
 .whats-new-button:hover {
   background-color: #000000;
 }
 
-body.dark-mode .whats-new-panel {
-  background-color: #444444;
-  color: #ffffff;
-}
-
 /* Dark Mode */
 body.dark-mode {
   background-color: #000000;
+  color: #ffffff;
+}
+
+body.dark-mode .bug-report-button {
+  background-color: #444444;
+  color: #ffffff;
+  border: 1px solid #777;
+}
+
+body.dark-mode .bug-report-button:hover {
+  background-color: #000000;
+}
+
+body.dark-mode .whats-new-panel {
+  background-color: #444444;
   color: #ffffff;
 }
 
