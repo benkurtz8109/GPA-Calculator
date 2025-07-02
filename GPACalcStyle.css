@@ -19,7 +19,7 @@ body {
 
 .container {
   position: fixed;
-  top: 50%;
+  top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #ffffff;
@@ -30,6 +30,7 @@ body {
   max-width: 400px;
   width: 100%;
   text-align: center;
+  z-index: 997;
 }
 
 h1 {
@@ -98,16 +99,16 @@ button:hover {
 @keyframes slideUpFlash {
   0% {
     opacity: 0;
-    transform: translateY(-20px); /* Start higher (slide from above) */
+    transform: translateY(50px); /* slide up */
   }
   100% {
     opacity: 1;
-    transform: translateY(0); /* End at normal position */
+    transform: translateY(0);
   }
 }
 
 .slide-up {
-  animation: slideUpFlash 2.0s ease forwards;
+  animation: slideUpFlash 3.0s ease forwards;
 }
 
 .flash-green {
@@ -129,13 +130,13 @@ button:hover {
 }
 
 .gpa-box {
-  position: absolute;
-  top: 0;
+  position: fixed; /* fixed so we can animate from bottom */
+  bottom: -170px;  /* off-screen initially */
   left: 50%;
+  transform: translateX(-50%);
   opacity: 0;
-  transform: translateX(-50%) translateY(20px);
-  transition: opacity 1.0s ease, transform 1.0s ease;
-  margin-top: 30px;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  margin-top: 20px;
   padding: 16px 20px;
   background-color: #ffffff;
   border-radius: 20px;
@@ -146,8 +147,6 @@ button:hover {
   width: 50%;
   max-width: 200px;
   text-align: center;
-  margin-left: auto;
-  margin-right: auto;
   visibility: hidden;
   pointer-events: none;
   white-space: pre-line;
@@ -156,16 +155,9 @@ button:hover {
 
 .gpa-box.visible {
   opacity: 1;
-  transform: translateX(-50%) translateY(0);
+  transform: translateX(-50%) translateY(-215px); /* slides up */
   visibility: visible;
   pointer-events: auto;
-  display: block;
-  margin-top: 20px;
-  padding: 12px;
-  font-size: 18px;
-  font-weight: bold;
-  text-align: center;
-  transition: all 0.5s ease;
 }
 
 .gpa-good {
@@ -472,7 +464,7 @@ body.dark-mode .settings-panel h2 {
 
 body.dark-mode input,
 body.dark-mode button {
-  background-color: #444;
+  background-color: #444444;
   color: #ffffff;
   border: 1px solid #777;
 }
@@ -505,3 +497,119 @@ body.dark-mode .coming-soon-panel {
   background-color: #444444; /* or any other dark background */
   color: #ffffff;
 }
+
+#history-button {
+  position: fixed;
+  bottom: 10px; /* distance from bottom */
+  left: 75px;
+  width: 110px;
+  height: 50px;
+  background-color: #A71930;
+  color: white;
+  border-radius: 25px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 996;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+#history-button:hover {
+  background-color: #000000;
+}
+
+
+/* GPA History Panel */
+#gpa-history-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  padding: 20px 30px;
+  width: 90%;
+  max-width: 400px;
+  opacity: 0;
+  pointer-events: none;
+  text-align: left;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  z-index: 2000;
+  transition: all 0.5s ease;
+}
+
+#gpa-history-panel.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: auto;
+}
+
+#gpa-history-panel h2 {
+  margin-bottom: 10px;
+  color: #000000;
+}
+
+#gpa-history-list {
+  list-style-type: disc;
+  padding-left: 20px;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+#gpa-history-list li {
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  color: #000000;
+}
+
+.history-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.close-button,
+.clear-button {
+  background-color: #A71930;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  font-size: 1.0rem;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: background-color 0.5s ease;
+}
+
+.clear-button:hover {
+  background-color: #000000;
+}
+
+/* Dark Mode Support */
+body.dark-mode #history-button {
+  background-color: #444444;
+  color: #ffffff;
+  border: 1px solid #777;
+}
+
+body.dark-mode #history-button:hover {
+  background-color: #000000;
+}
+
+body.dark-mode #gpa-history-panel {
+  background-color: #444444;
+  color: #ffffff;
+}
+
+body.dark-mode #gpa-history-list li,
+body.dark-mode #gpa-history-panel h2 {
+  color: #ffffff;
+}
+
