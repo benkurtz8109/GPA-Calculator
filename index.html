@@ -3,12 +3,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.15" />
   <title>Jonathan Alder GPA Calculator</title>
   <link rel="stylesheet" type="text/css" href="GPACalcStyle.css" />
-  <style>
-    .hidden { display: none; }
-  </style>
 </head>
 <body>
   <!-- MAIN BLURRABLE CONTENT -->
@@ -35,13 +32,11 @@
       </div>
     </div>
 
-    <div id="result" class="gpa-box"></div>
-
+    <div id="result" class="gpa-box"></div>  
     
-  <!-- FLOATING BUTTONS OUTSIDE BLURRED AREA -->
-  <div id="bottom-right">
+    <div id="bottom-right">
   <button class="settings-button" onclick="toggleSettingsMenu()">⚙</button>
-  <div class="version-label">Tech Test v1.1.1</div>
+  <div class="version-label">Tech Test v1.2</div>
   </div>
   
     <div id="settings-panel" class="settings-panel">
@@ -71,23 +66,37 @@
   <div id="coming-soon-panel" class="coming-soon-panel">
     <h2>🚀 Coming Soon!</h2>
     <ul>
-      <li>📊 GPA history</li>
       <li>🌍 Multi-language support</li>
       <li>⚙ More Settings</li>
-      <li>Better Accessibility</li>
+      <li>Improved Accessibility</li>
     </ul>
     <button class="close-button" onclick="toggleComingSoon()">Close</button>
   </div>
   
   <div id="whats-new-panel" class="whats-new-panel">
-  <h2>📢 What's New in v1.1.1</h2>
+  <h2>📢 What's New in v1.2</h2>
   <ul>
-    <li>🐞 Fixed Bug Report Button (#3)</li>
-    <li>🐞 Fixed GPA-Box fading (#4)</li>
-    <li>🐞 Partially fixed GPA-Box first fade (#5) now starts fade too high (known issue will fix soon)</li>
+    <li>📊 Added your GPA History allowing you to see your past GPAs</li>
+    <li>🐞 Fixed GPA-Box first fade (#5)</li>
+    <li>🐞 Fixed GPA-Box continue lag (#6)</li>
+    <li>🐞 Fixed Invalid Grades bug</li>
+    <li>🐞 Created new invalid grade bug causing it to not show up when page loads. User must input at least one grade after loading website to recieve message.</li>
   </ul>
   <button class="close-button" onclick="toggleWhatsNew()">Close</button>
 </div>
+  
+    <button id="history-button" class="history-button" onclick="toggleGPAHistory()">📊 History</button>
+  
+  <div id="gpa-history-panel" class="coming-soon-panel">
+  <h2>📊 GPA History</h2>
+  <ul id="gpa-history-list"></ul>
+    <div class="history-buttons">
+      <button onclick="clearGPAHistory()">Clear</button>
+      <button class="close-button" onclick="toggleGPAHistory()">Close</button>
+    </div>
+  </div>
+
+  
 
   <!-- Script -->
   <script>
@@ -222,26 +231,28 @@ function calculateLetterGPA() {
     if (invalid.length > 0) {
       output += ` | Invalid entries: ${invalid.join(', ')}`;
     }
-    resultEl.textContent = output;
+    resultEl.textContent = output;  
+    saveGPAHistory(`GPA: ${gpa}`);
 
     resultEl.className = 'gpa-box'; // Reset class
     if (gpaValue >= 3.5) {
-      resultEl.classList.add('gpa-good', 'flash-green');
+      resultEl.classList.add('gpa-good', 'flash-green', 'slide-up');
     } else if (gpaValue >= 2.8) {
-      resultEl.classList.add('gpa-average');
+      resultEl.classList.add('gpa-average', 'slide-up');
     } else if (gpaValue >= 2.0) {
-      resultEl.classList.add('gpa-poor');
+      resultEl.classList.add('gpa-poor', 'slide-up');
     } else {
-      resultEl.classList.add('gpa-terrible', 'flash-red');
+      resultEl.classList.add('gpa-terrible', 'flash-red', 'slide-up');
     }
   }
 
   // 💡 New: Position the result below the container
   const container = document.querySelector('.container');
   const containerRect = container.getBoundingClientRect();
-  resultEl.style.top = `${containerRect.bottom + 20}px`; // 20px below container
 
-  resultEl.classList.add("visible", "slide-up");
+  resultEl.classList.add("visible");
+  void resultEl.offsetWidth; // Forces reflow to restart animation
+  resultEl.classList.add("slide-up");
   document.getElementById('gpa-button').style.display = 'none';
   document.getElementById('restart-button').style.display = 'inline-block';
   document.getElementById('continue-button').style.display = 'inline-block';
@@ -282,32 +293,34 @@ function calculateWeightedGPA() {
 
   if (totalCount === 0) {
     resultEl.textContent = "No valid grades entered.";
-    resultEl.className = 'gpa-box';
   } else {
     const weightedGPA = (weightedPoints / totalCount).toFixed(2);
     const unweightedGPA = (unweightedPoints / unweightedCount).toFixed(2);
     const weightedGPAValue = parseFloat(weightedGPA);
     let output = `Your Weighted GPA is: ${weightedGPA}\nYour Unweighted GPA is: ${unweightedGPA}`;
     resultEl.textContent = output;
+    
+    saveGPAHistory(output);
 
     resultEl.className = 'gpa-box'; // Reset class
     if (weightedGPAValue >= 3.5) {
-      resultEl.classList.add('gpa-good', 'flash-green');
+      resultEl.classList.add('gpa-good', 'flash-green', 'slide-up');
     } else if (weightedGPAValue >= 2.8) {
-      resultEl.classList.add('gpa-average');
+      resultEl.classList.add('gpa-average', 'slide-up');
     } else if (weightedGPAValue >= 2.0) {
-      resultEl.classList.add('gpa-poor');
+      resultEl.classList.add('gpa-poor', 'slide-up');
     } else {
-      resultEl.classList.add('gpa-terrible', 'flash-red');
+      resultEl.classList.add('gpa-terrible', 'flash-red', 'slide-up');
     }
   }
 
   // 💡 New: Position the result below the container
   const container = document.querySelector('.container');
   const containerRect = container.getBoundingClientRect();
-  resultEl.style.top = `${containerRect.bottom + 20}px`;
 
-  resultEl.classList.add("visible", "slide-up");
+  resultEl.classList.add("visible");
+  void resultEl.offsetWidth; // Forces reflow to restart animation
+  resultEl.classList.add("slide-up");
   document.getElementById('gpa-button').style.display = 'none';
   document.getElementById('restart-button').style.display = 'inline-block';
   document.getElementById('continue-button').style.display = 'inline-block';
@@ -332,12 +345,53 @@ function continueEditing() {
   const resultEl = document.getElementById('result');
   resultEl.classList.remove("visible");
   setTimeout(() => {
-    document.getElementById('gpa-button').style.display = 'inline-block';
-    document.getElementById('restart-button').style.display = 'none';
-    document.getElementById('continue-button').style.display = 'none';
+    document.getElementById('gpa-button').style.display = 'none';
+    document.getElementById('restart-button').style.display = 'inline-block';
+    document.getElementById('continue-button').style.display = 'inline-block';
     calculateGPA();
   }, 400);
 }
+  
+  function toggleGPAHistory() {
+  const panel = document.getElementById('gpa-history-panel');
+  const blurOverlay = document.getElementById('blur-overlay');
+  const isShown = panel.classList.toggle('show');
+
+  if (isShown) {
+    blurOverlay.classList.add('show');
+    renderGPAHistory();
+  } else {
+    blurOverlay.classList.remove('show');
+  }
+}
+
+function saveGPAHistory(entry) {
+  let history = JSON.parse(localStorage.getItem('gpaHistory')) || [];
+  const timestamp = new Date().toLocaleString();
+  history.push({ entry, timestamp });
+  localStorage.setItem('gpaHistory', JSON.stringify(history));
+}
+
+function renderGPAHistory() {
+  const list = document.getElementById('gpa-history-list');
+  list.innerHTML = '';
+  const history = JSON.parse(localStorage.getItem('gpaHistory')) || [];
+  if (history.length === 0) {
+    list.innerHTML = '<li>No GPA history yet.</li>';
+  } else {
+    history.slice().reverse().forEach(item => {
+      const li = document.createElement('li');
+      li.textContent = `${item.entry} (${item.timestamp})`;
+      list.appendChild(li);
+    });
+  }
+}
+
+function clearGPAHistory() {
+  localStorage.removeItem('gpaHistory');
+  renderGPAHistory();
+}
+
   </script>
 </body>
 </html>
